@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ironshop/StyleScheme.dart';
+import 'package:laundryapp/StyleScheme.dart';
 import 'OrderPage.dart';
 
 class HomePage extends StatelessWidget {

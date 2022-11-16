@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ironshop/StyleScheme.dart';
-import 'package:ironshop/TrackOrderPage.dart';
+import 'package:laundryapp/StyleScheme.dart';
+import 'package:laundryapp/TrackOrderPage.dart';
 
 class OrderConfirmPage extends StatelessWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ironshop/StyleScheme.dart';
+import 'package:laundryapp/StyleScheme.dart';
 import 'OrderConfirmPage.dart';
 
 class TrackOrderPage extends StatelessWidget {
@@ -26,21 +26,21 @@ class _trackOrderPageState extends State<trackOrderPage> {
         elevation: 0,
         leading: IconButton(
           onPressed: () => {},
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
-        title: Text(
+        title: const Text(
           "Track Order",
           style: TextStyle(color: Colors.black),
         ),
         actions: [
           IconButton(
             onPressed: () => {},
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
           )
         ],
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -53,14 +53,14 @@ class _trackOrderPageState extends State<trackOrderPage> {
               style: contentStyle.copyWith(color: Colors.grey, fontSize: 16),
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 15),
+              margin: const EdgeInsets.symmetric(vertical: 15),
               height: 1,
               color: Colors.grey,
             ),
             Stack(
               children: [
                 Container(
-                  margin: EdgeInsets.only(left: 13, top: 50),
+                  margin: const EdgeInsets.only(left: 13, top: 50),
                   width: 4,
                   height: 400,
                   color: Colors.grey,
@@ -77,7 +77,7 @@ class _trackOrderPageState extends State<trackOrderPage> {
               ],
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 15),
+              margin: const EdgeInsets.symmetric(vertical: 15),
               height: 1,
               color: Colors.grey,
             ),
@@ -85,9 +85,9 @@ class _trackOrderPageState extends State<trackOrderPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
                       border: Border.all(
                         color: Colors.orange,
                       )),
@@ -97,8 +97,8 @@ class _trackOrderPageState extends State<trackOrderPage> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     color: Colors.orange,
                   ),
@@ -117,15 +117,15 @@ class _trackOrderPageState extends State<trackOrderPage> {
         selectedItemColor: Colors.orange,
         iconSize: 30,
         items: [
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
               icon: Icon(Icons.track_changes), label: "Track Order"),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
               icon: Icon(Icons.view_list), label: "My Orders"),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.track_changes),
             label: "Profile",
           ),
@@ -136,7 +136,7 @@ class _trackOrderPageState extends State<trackOrderPage> {
 
   Container statusWidget(String img, String status, bool isActive) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
         children: [
           Container(
@@ -149,7 +149,7 @@ class _trackOrderPageState extends State<trackOrderPage> {
                     color: (isActive) ? Colors.transparent : Colors.orange,
                     width: 3)),
           ),
-          SizedBox(
+          const SizedBox(
             width: 50,
           ),
           Column(

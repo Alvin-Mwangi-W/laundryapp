@@ -30,22 +30,15 @@ class CartController extends GetxController {
 
   void updateItem(ClothingItem item, int quantity) {
     print("try updating ${item.name} ${quantity}");
-    cartItems.forEach((element) {
-      // if (element.value.name == item.name) {
-      //   element.value.quantity = quantity;
-      //   print("${element.value.name} ${element.value.quantity}");
-      //   cartTotal.value = 0;
-      //   cartItems.forEach((element) {
-      //     cartTotal.value += element.value.price * element.value.quantity;
-      //   });
-      //   print("total now = ${cartTotal.value}");
-      // }
-      //return element;
-    });
+
     for (var i = 0; i < cartItems.length; i++) {
       print("${cartItems[i].value.name} ${cartItems[i].value.quantity}");
       if (cartItems[i].value.name == item.name) {
         cartItems[i].value.quantity = quantity;
+        cartItems[i].update((item) {
+          item?.quantity = quantity;
+        });
+
         print("${cartItems[i].value.name} ${cartItems[i].value.quantity}");
         cartTotal.value = 0;
         cartItems.forEach((element) {

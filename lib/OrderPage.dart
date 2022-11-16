@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ironshop/CartController.dart';
-import 'package:ironshop/PickUpTimePage.dart';
-import 'package:ironshop/StyleScheme.dart';
+import 'package:laundryapp/CartController.dart';
+import 'package:laundryapp/PickUpTimePage.dart';
+import 'package:laundryapp/StyleScheme.dart';
 import 'package:get/get.dart';
-import 'package:ironshop/CartController.dart';
+import 'package:laundryapp/CartController.dart';
 
 class OrderPage extends StatelessWidget {
   @override
@@ -92,7 +92,7 @@ class _orderPageState extends State<orderPage> {
                   decoration: BoxDecoration(
                     gradient: gradientStyle,
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       "SELECT DATE & TIME",
                       style: TextStyle(
@@ -102,7 +102,7 @@ class _orderPageState extends State<orderPage> {
                     ),
                   )),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             )
           ],
@@ -190,8 +190,8 @@ class ClothWidget extends StatelessWidget {
                     // minus button
                     InkWell(
                       onTap: () {
-                        cartController.removeFromCart(item);
-                        //cartController.updateItem(item, item.quantity--);
+                        //cartController.removeFromCart(item);
+                        cartController.updateItem(item, item.quantity - 1);
                       },
                       child: Container(
                         height: 40,
@@ -218,8 +218,8 @@ class ClothWidget extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        cartController.addToCart(item);
-                        //cartController.updateItem(item, item.quantity++);
+                        ///cartController.addToCart(item);
+                        cartController.updateItem(item, item.quantity + 1);
                       },
                       child: Container(
                         height: 40,

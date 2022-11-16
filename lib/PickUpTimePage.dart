@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ironshop/StyleScheme.dart';
-import 'package:ironshop/OrderConfirmPage.dart';
+import 'package:laundryapp/StyleScheme.dart';
+import 'package:laundryapp/OrderConfirmPage.dart';
 
 class PickUpTimePage extends StatelessWidget {
   @override
