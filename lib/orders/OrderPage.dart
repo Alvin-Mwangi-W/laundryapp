@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:laundryapp/CartController.dart';
-import 'package:laundryapp/PickUpTimePage.dart';
+import 'package:laundryapp/orders/OrderConfirmPage.dart';
+import 'package:laundryapp/controllers/CartController.dart';
 import 'package:laundryapp/StyleScheme.dart';
 import 'package:get/get.dart';
-import 'package:laundryapp/CartController.dart';
+import 'package:http/http.dart' as http;
 
 class OrderPage extends StatelessWidget {
   @override
@@ -83,8 +85,7 @@ class _orderPageState extends State<orderPage> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PickUpTimePage()));
+                createOrder();
               },
               child: Container(
                   padding: EdgeInsets.all(20),
@@ -94,7 +95,7 @@ class _orderPageState extends State<orderPage> {
                   ),
                   child: const Center(
                     child: Text(
-                      "SELECT DATE & TIME",
+                      "PLACE ORDER",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 22,
@@ -109,6 +110,44 @@ class _orderPageState extends State<orderPage> {
         ),
       ),
     );
+  }
+
+  void createOrder() {
+    var customerId = 0;
+    var items = [];
+
+    cartController.cartItems.forEach((clothingItem) {
+      if (clothingItem.value.quantity > 0) {
+        items.add({
+          "clothingItemId": clothingItem.value.id,
+          "quantity": clothingItem.value.quantity
+        });
+      }
+    });
+    var data = {
+      "customerId": customerId,
+      "items": items,
+    };
+    print(data);
+    var body = json.encode(data);
+
+    //ignore: avoid_print
+    print(body);
+    var url = Uri.parse('http://localhost:8080/orders');
+    http.post(url, body: body, headers: {
+      "Content-Type": "application/json",
+      "accept": "application/json"
+    }).then((response) {
+      var responseBody = jsonDecode(response.body);
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => OrderConfirmPage(
+                orderId: responseBody["id"].toString(),
+              )));
+    }).catchError((err) {
+      print(err);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(err.toString())));
+    });
   }
 }
 
@@ -172,17 +211,13 @@ class ClothWidget extends StatelessWidget {
                       style: headingStyle,
                     ),
                     Text(
-                      "\$${item.price}",
+                      "\Ksh${item.price}",
                       style: headingStyle.copyWith(color: Colors.grey),
-                    ),
-                    Text(
-                      "Add Note",
-                      style: contentStyle.copyWith(color: Colors.orange),
                     )
                   ],
                 ),
                 Text(
-                  "\$45",
+                  "${item.quantity * item.price}",
                   style: headingStyle,
                 ),
                 Row(

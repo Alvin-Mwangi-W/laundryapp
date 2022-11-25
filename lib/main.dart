@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'Onboarding.dart';
 import 'package:get/get.dart';
-import 'CartController.dart';
+import 'controllers/CartController.dart';
 
 void main() {
   runApp(MyApp());
