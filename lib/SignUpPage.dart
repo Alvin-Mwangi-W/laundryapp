@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:laundryapp/HomePage.dart';
 import 'LoginPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -9,116 +12,165 @@ class SignUpPage extends StatelessWidget {
     );
   }
 }
+
 class signUpPage extends StatefulWidget {
   @override
   _signUpPageState createState() => _signUpPageState();
 }
 
 class _signUpPageState extends State<signUpPage> {
+  var name = "";
+  var phoneNumber = "";
+  var email = "";
+  var password = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 50,),
+            const SizedBox(
+              height: 50,
+            ),
             Container(
               height: 70,
               width: 70,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('asset/images/logo.png')
-                  )
-              ),
+                      image: AssetImage('asset/images/logo.png'))),
             ),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Sign Up", style: TextStyle(
-                      color: Colors.orange,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'sfpro'
-                  ),),
-                  SizedBox(height: 10,),
-                  TextField(
+                  const Text(
+                    "Sign Up",
+                    style: TextStyle(
+                        color: Colors.orange,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'sfpro'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const TextField(
+                    onChanged: (value) {
+                      name = value;
+                    },
                     decoration: InputDecoration(
                       labelText: "Name",
                     ),
                   ),
-                  TextField(
+                  const TextField(
                     decoration: InputDecoration(
+                      onChanged: (value) {
+                        phoneNumber = value;
+                      },
                       labelText: "Phone Number",
                     ),
                   ),
-                  TextField(
+                  const TextField(
                     decoration: InputDecoration(
-                      labelText: "Mail ID",
+                      onChanged: (value) {
+                        email = value;
+                      },
+                      labelText: "Email Address",
                     ),
                   ),
-                  TextField(
+                  const TextField(
                     decoration: InputDecoration(
+                      onChanged: (value) {
+                        password = value;
+                      },
                       labelText: "Password",
                     ),
                   ),
-                 SizedBox(height: 30,),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(40)),
-                        gradient: LinearGradient(
-                            colors: [Color(0xfff3953b), Color(0xffe57509)],
-                            stops: [0,1],
-                            begin: Alignment.topCenter
-                        )
-                    ),
-                    child: Center(
-                      child: Text("SIGN UP", style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: 'sfpro'
-                      ),),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      RegisterUser();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(40)),
+                          gradient: LinearGradient(
+                              colors: [Color(0xfff3953b), Color(0xffe57509)],
+                              stops: [0, 1],
+                              begin: Alignment.topCenter)),
+                      child: const Center(
+                        child: Text(
+                          "SIGN UP",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'sfpro'),
+                        ),
+                      ),
                     ),
                   ),
-                 SizedBox(height: 10,),
-                 Text("By pressing signup you agree to our terms and conditions", style: TextStyle(
-                  fontSize: 15
-                 ),textAlign: TextAlign.center,)
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    "By pressing signup you agree to our terms and conditions",
+                    style: TextStyle(fontSize: 15),
+                    textAlign: TextAlign.center,
+                  )
                 ],
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Already have an account?", style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: 'sfpro'
-                ),),
+                const Text(
+                  "Already have an account?",
+                  style: TextStyle(fontSize: 16, fontFamily: 'sfpro'),
+                ),
                 InkWell(
                   onTap: openLoginPage,
-                  child: Text(" LOGIN", style: TextStyle(
-                      color: Colors.orange,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700
-                  ),),
+                  child: const Text(
+                    " LOGIN",
+                    style: TextStyle(
+                        color: Colors.orange,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
+                  ),
                 )
               ],
             ),
-            SizedBox(height: 10,)
+            const SizedBox(
+              height: 10,
+            )
           ],
         ),
       ),
     );
   }
-  void openLoginPage()
-  {
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+
+  void openLoginPage() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
+  }
+
+  void RegisterUser() {
+    print("Registering User....");
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((signedInUser) {
+      print("User Registered Successfully");
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+    }).catchError((e) {
+      print(e);
+    });
   }
 }
-

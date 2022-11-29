@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 import 'Onboarding.dart';
 import 'package:get/get.dart';
 import 'CartController.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() {
+  await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(MyApp());
 }
 
