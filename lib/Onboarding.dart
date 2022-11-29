@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'LoginPage.dart';
+import 'user/LoginPage.dart';
+
 class Onboarding extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -10,6 +11,7 @@ class Onboarding extends StatelessWidget {
     );
   }
 }
+
 class onboarding extends StatefulWidget {
   @override
   _onboardingState createState() => _onboardingState();
@@ -30,12 +32,8 @@ class _onboardingState extends State<onboarding> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(
-                        'asset/images/bg.png'
-                    )
-                )
-            ),
+                image:
+                    DecorationImage(image: AssetImage('asset/images/bg.png'))),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -56,8 +54,7 @@ class _onboardingState extends State<onboarding> {
               ),
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(5, (index) => getIndicator(index))
-              ),
+                  children: List.generate(5, (index) => getIndicator(index))),
             ],
           ),
           Positioned(
@@ -74,32 +71,26 @@ class _onboardingState extends State<onboarding> {
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
                           colors: [Color(0xfff3953b), Color(0xffe57509)],
-                          stops: [0,1],
-                          begin: Alignment.topCenter
-                      )
-                  ),
+                          stops: [0, 1],
+                          begin: Alignment.topCenter)),
                   child: Icon(
                     Icons.arrow_forward,
                     color: Colors.white,
                     size: 40,
                   ),
                 ),
-              )
-          ),
-
+              )),
         ],
       ),
     );
   }
-  setCurrentPage(int value)
-  {
-    currentPage = value;
-    setState(() {
 
-    });
+  setCurrentPage(int value) {
+    currentPage = value;
+    setState(() {});
   }
-  AnimatedContainer getIndicator(int pageNo)
-  {
+
+  AnimatedContainer getIndicator(int pageNo) {
     return AnimatedContainer(
         duration: Duration(milliseconds: 100),
         height: 10,
@@ -107,12 +98,10 @@ class _onboardingState extends State<onboarding> {
         margin: EdgeInsets.symmetric(horizontal: 5),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(5)),
-            color: (currentPage == pageNo) ? Colors.orange : Colors.grey
-        )
-    );
+            color: (currentPage == pageNo) ? Colors.orange : Colors.grey));
   }
-  Column onBoardPage(String img, String title)
-  {
+
+  Column onBoardPage(String img, String title) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -121,38 +110,39 @@ class _onboardingState extends State<onboarding> {
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.all(50),
           decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('asset/images/$img.png')
-              )
-          ),
+              image:
+                  DecorationImage(image: AssetImage('asset/images/$img.png'))),
         ),
         Container(
           padding: EdgeInsets.symmetric(vertical: 10),
-          child: Text(title, style: TextStyle(
-              fontSize: 30,
-              fontFamily: 'roboto',
-              fontWeight: FontWeight.w500
-          ),),
+          child: Text(
+            title,
+            style: TextStyle(
+                fontSize: 30,
+                fontFamily: 'roboto',
+                fontWeight: FontWeight.w500),
+          ),
         ),
         Container(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-          child: Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text", style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey
-          ),textAlign: TextAlign.center,),
+          child: Text(
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+            textAlign: TextAlign.center,
+          ),
         )
       ],
     );
   }
-  void changePage()
-  {
+
+  void changePage() {
     print(currentPage);
-    if(currentPage == 4)
-      {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
-      }
-    else{
-      _pageController.animateToPage(currentPage+1, duration: Duration(milliseconds: 200), curve: Curves.linear);
+    if (currentPage == 4) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
+    } else {
+      _pageController.animateToPage(currentPage + 1,
+          duration: Duration(milliseconds: 200), curve: Curves.linear);
     }
   }
 }

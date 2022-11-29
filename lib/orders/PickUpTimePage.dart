@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laundryapp/StyleScheme.dart';
-import 'package:laundryapp/OrderConfirmPage.dart';
+import 'package:laundryapp/orders/OrderConfirmPage.dart';
 
 class PickUpTimePage extends StatelessWidget {
   @override
@@ -167,7 +167,9 @@ class _pickUpTimePageState extends State<pickUpTimePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => OrderConfirmPage()));
+                        builder: (context) => OrderConfirmPage(
+                              orderId: "1",
+                            )));
               },
               child: Container(
                 width: MediaQuery.of(context).size.width,

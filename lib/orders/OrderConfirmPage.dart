@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:laundryapp/StyleScheme.dart';
-import 'package:laundryapp/TrackOrderPage.dart';
+import 'package:laundryapp/orders/TrackOrderPage.dart';
+
+import '../controllers/CartController.dart';
 
 class OrderConfirmPage extends StatelessWidget {
+  final String orderId;
+  OrderConfirmPage({required this.orderId});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: orderConfirmPage(),
+      home: orderConfirmPage(
+        orderId: orderId,
+      ),
     );
   }
 }
 
 class orderConfirmPage extends StatefulWidget {
+  final String orderId;
+  orderConfirmPage({required this.orderId});
   @override
   _orderConfirmPageState createState() => _orderConfirmPageState();
 }
 
 class _orderConfirmPageState extends State<orderConfirmPage> {
+  CartController cartController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +90,7 @@ class _orderConfirmPageState extends State<orderConfirmPage> {
                       gradient: gradientStyle,
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: Text(
-                    "1001",
+                    "${widget.orderId}",
                     style: headingStyle.copyWith(color: Colors.white),
                   ),
                 )
@@ -93,10 +104,12 @@ class _orderConfirmPageState extends State<orderConfirmPage> {
                   "Clothes Count",
                   style: headingStyle,
                 ),
-                Text(
-                  "7",
-                  style: headingStyle.copyWith(color: Colors.grey),
-                ),
+                Obx(
+                  () => Text(
+                    "${cartController.clothesCount}",
+                    style: headingStyle.copyWith(color: Colors.grey),
+                  ),
+                )
               ],
             ),
             divider(),
@@ -107,28 +120,30 @@ class _orderConfirmPageState extends State<orderConfirmPage> {
                   "Final Amount",
                   style: headingStyle,
                 ),
-                Text(
-                  "225",
-                  style: headingStyle.copyWith(color: Colors.grey),
-                ),
+                Obx(
+                  () => Text(
+                    "${cartController.cartTotal.value}",
+                    style: headingStyle.copyWith(color: Colors.grey),
+                  ),
+                )
               ],
             ),
-            divider(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Pick up Date & Time",
-                  style: headingStyle,
-                ),
-                Text(
-                  "Wednesday, 07 Aug, 2020. Between 10:00 AM & 12:00 PM",
-                  style:
-                      contentStyle.copyWith(color: Colors.grey, fontSize: 16),
-                ),
-              ],
-            ),
-            divider(),
+            // divider(),
+            // Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     Text(
+            //       "Pick up Date & Time",
+            //       style: headingStyle,
+            //     ),
+            //     Text(
+            //       "Wednesday, 07 Aug, 2020. Between 10:00 AM & 12:00 PM",
+            //       style:
+            //           contentStyle.copyWith(color: Colors.grey, fontSize: 16),
+            //     ),
+            //   ],
+            // ),
+            // divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

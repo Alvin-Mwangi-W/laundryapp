@@ -3,14 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'Onboarding.dart';
 import 'package:get/get.dart';
-import 'CartController.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'controllers/CartController.dart';
 
-void main() {
+void main() async {
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
