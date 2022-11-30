@@ -225,11 +225,11 @@ class _loginPageState extends State<loginPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(){
-      FirebaseAuth.instance.currentUser != null){
-         Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
-      }
+    if (FirebaseAuth.instance.currentUser != null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Already Logged In....Fetching profile"),
+      ));
+      fetchUser();
     }
   }
 

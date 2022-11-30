@@ -15,12 +15,65 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   var orders = [];
+  bool isAdmin = false;
+  var userInput = "";
+  var adminPassword = "admin";
 
   @override
   Widget build(BuildContext context) {
-    return OrdersList(
-      isAdmin: true,
-      orders: orders,
+    return isAdmin
+        ? OrdersList(
+            isAdmin: true,
+            orders: orders,
+          )
+        : buildAdminSignin();
+  }
+
+  Widget buildAdminSignin() {
+    return Center(
+      child: SizedBox(
+        width: 400,
+        // height: 400,
+        child: Card(
+          elevation: 5,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                TextField(
+                  onChanged: ((value) {
+                    userInput = value;
+                  }),
+                  decoration:
+                      const InputDecoration(hintText: "Enter Admin Password"),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.orange,
+                    ),
+                    onPressed: () async {
+                      if (userInput == adminPassword) {
+                        setState(() {
+                          isAdmin = true;
+                        });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Wrong Password")));
+                      }
+                    },
+                    child: const Text("Enter"),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 

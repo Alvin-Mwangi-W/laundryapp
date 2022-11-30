@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:laundryapp/orders/OrdersList.dart';
 import 'package:laundryapp/orders/OrdersList.dart';
@@ -26,7 +27,7 @@ class _MyOrdersState extends State<MyOrders> {
   @override
   void initState() {
     super.initState();
-    var customerId = 0;
+    var customerId = FirebaseAuth.instance.currentUser!.uid;
     var url = Uri.parse(
         'http://localhost:8080/orders?customerId=${customerId}'); //todo: chnage this
     http.get(url, headers: {

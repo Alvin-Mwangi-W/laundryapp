@@ -1,6 +1,9 @@
 // ignore_for_file: unnecessary_brace_in_string_interps
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class OrderCard extends StatelessWidget {
   final String orderId;
@@ -53,21 +56,33 @@ class OrderCard extends StatelessWidget {
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                              Text("Update order"),
+                              const Text("Update order"),
                               TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    updateOrderStatus("WASHING",
+                                        context: context);
+                                  },
                                   child: const Text("Washing",
                                       style: TextStyle(color: Colors.green))),
                               TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    updateOrderStatus("PENDING_DELIVERY",
+                                        context: context);
+                                  },
                                   child: const Text("Pending Delivery",
                                       style: TextStyle(color: Colors.red))),
                               TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    updateOrderStatus("DELIVERED",
+                                        context: context);
+                                  },
                                   child: const Text("Delivered",
                                       style: TextStyle(color: Colors.green))),
                               TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    updateOrderStatus("RECEIVED",
+                                        context: context);
+                                  },
                                   child: const Text("Received",
                                       style: TextStyle(color: Colors.red))),
                             ])
@@ -79,5 +94,38 @@ class OrderCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void updateOrderStatus(String status, {required BuildContext context}) async {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text(
+        "Updating order status...",
+      ),
+      duration: Duration(seconds: 5),
+    ));
+    var data = {"status": status};
+
+    var url = Uri.parse(
+        'http://localhost:8080/orders/${orderId}'); //todo: chnage this
+    http
+        .put(url,
+            headers: {
+              "Content-Type": "application/json",
+              "accept": "application/json"
+            },
+            body: jsonEncode(data))
+        .then((response) {
+      var responseBody = jsonDecode(response.body);
+      print("order updated");
+      print(responseBody);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Order updated.Refresh to see changes"),
+        duration: Duration(seconds: 5),
+      ));
+    }).catchError((err) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(err.toString())));
+      throw err;
+    });
   }
 }

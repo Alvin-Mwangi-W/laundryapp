@@ -1,29 +1,37 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:laundryapp/AdminPage.dart';
 import 'package:laundryapp/LandingPage.dart';
+import 'package:laundryapp/user/LoginPage.dart';
 import 'package:laundryapp/user/Profile.dart';
 import 'package:laundryapp/StyleScheme.dart';
 import 'package:laundryapp/orders/MyOrders.dart';
 import 'orders/OrderPage.dart';
 
 class HomePage extends StatelessWidget {
+  final int initialPage;
+  HomePage({this.initialPage = 0});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: homePage(),
+      home: homePage(
+        initialPage: initialPage,
+      ),
     );
   }
 }
 
 class homePage extends StatefulWidget {
+  final int initialPage;
+  homePage({required this.initialPage });
   @override
   _homePageState createState() => _homePageState();
 }
 
 class _homePageState extends State<homePage> {
   List<Widget> pages = [];
-
+  var currentPage = 0;
   Widget bodyWidget = Container();
 
   @override
@@ -49,6 +57,7 @@ class _homePageState extends State<homePage> {
       ),
       body: bodyWidget,
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentPage,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.orange,
         iconSize: 30,
@@ -74,6 +83,7 @@ class _homePageState extends State<homePage> {
   void openRelevantPage(int pageId) {
     setState(() {
       bodyWidget = pages[pageId];
+      currentPage = pageId;
     });
   }
 
@@ -92,8 +102,17 @@ class _homePageState extends State<homePage> {
         Profile(),
         AdminPage()
       ]);
+      currentPage = widget.initialPage;
+      bodyWidget = pages[currentPage];
+    });
 
-      bodyWidget = pages[0];
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => LoginPage()));
+      } else {
+        print('User is signed in!');
+      }
     });
   }
 }

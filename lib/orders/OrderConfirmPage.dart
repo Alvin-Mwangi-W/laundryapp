@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laundryapp/HomePage.dart';
 import 'package:laundryapp/StyleScheme.dart';
 import 'package:laundryapp/orders/TrackOrderPage.dart';
 
@@ -162,8 +163,12 @@ class _orderConfirmPageState extends State<orderConfirmPage> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TrackOrderPage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomePage(
+                              initialPage: 1,
+                            )));
               },
               child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -171,7 +176,7 @@ class _orderConfirmPageState extends State<orderConfirmPage> {
                 decoration: BoxDecoration(gradient: gradientStyle),
                 child: Center(
                   child: Text(
-                    "TRACK ORDER",
+                    "MY ORDERS",
                     style: contentStyle.copyWith(
                         color: Colors.white, fontSize: 22),
                   ),
