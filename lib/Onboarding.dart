@@ -31,7 +31,7 @@ class _onboardingState extends State<onboarding> {
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image:
                     DecorationImage(image: AssetImage('asset/images/bg.png'))),
           ),
@@ -66,14 +66,14 @@ class _onboardingState extends State<onboarding> {
                 child: Container(
                   height: 70,
                   width: 70,
-                  margin: EdgeInsets.only(bottom: 30),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.only(bottom: 30),
+                  decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
                           colors: [Color(0xfff3953b), Color(0xffe57509)],
                           stops: [0, 1],
                           begin: Alignment.topCenter)),
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_forward,
                     color: Colors.white,
                     size: 40,
@@ -92,12 +92,12 @@ class _onboardingState extends State<onboarding> {
 
   AnimatedContainer getIndicator(int pageNo) {
     return AnimatedContainer(
-        duration: Duration(milliseconds: 100),
+        duration: const Duration(milliseconds: 100),
         height: 10,
         width: (currentPage == pageNo) ? 20 : 10,
-        margin: EdgeInsets.symmetric(horizontal: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 5),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
             color: (currentPage == pageNo) ? Colors.orange : Colors.grey));
   }
 
@@ -108,24 +108,24 @@ class _onboardingState extends State<onboarding> {
         Container(
           height: 200,
           width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.all(50),
+          padding: const EdgeInsets.all(50),
           decoration: BoxDecoration(
               image:
                   DecorationImage(image: AssetImage('asset/images/$img.png'))),
         ),
         Container(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 30,
                 fontFamily: 'roboto',
                 fontWeight: FontWeight.w500),
           ),
         ),
         Container(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-          child: Text(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+          child: const Text(
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text",
             style: TextStyle(fontSize: 16, color: Colors.grey),
             textAlign: TextAlign.center,
@@ -142,7 +142,7 @@ class _onboardingState extends State<onboarding> {
           context, MaterialPageRoute(builder: (context) => LoginPage()));
     } else {
       _pageController.animateToPage(currentPage + 1,
-          duration: Duration(milliseconds: 200), curve: Curves.linear);
+          duration: const Duration(milliseconds: 200), curve: Curves.linear);
     }
   }
 }

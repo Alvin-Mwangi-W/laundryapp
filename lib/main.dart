@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:laundryapp/controllers/UserController.dart';
 import 'Onboarding.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +18,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final CartController c = Get.put(CartController());
+  final UserController u = Get.put(UserController());
 
   // This widget is the root of your application.
   @override

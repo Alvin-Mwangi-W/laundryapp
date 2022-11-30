@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:laundryapp/orders/OrderConfirmPage.dart';
 import 'package:laundryapp/controllers/CartController.dart';
@@ -113,7 +114,7 @@ class _orderPageState extends State<orderPage> {
   }
 
   void createOrder() {
-    var customerId = 0;
+    var customerId = FirebaseAuth.instance.currentUser!.uid;
     var items = [];
 
     cartController.cartItems.forEach((clothingItem) {

@@ -89,7 +89,7 @@ class _homePageState extends State<homePage> {
       pages.addAll([
         LandingPage(openOrderPage: openOrderPage),
         MyOrders(),
-        const Profile(),
+        Profile(),
         AdminPage()
       ]);
 

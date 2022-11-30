@@ -1,6 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:laundryapp/HomePage.dart';
-import 'package:laundryapp/user/SignUpPage.dart';
+import 'package:laundryapp/controllers/UserController.dart';
+import 'SignUpPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'package:laundryapp/controllers/UserController.dart' as _userController;
 
 class LoginPage extends StatelessWidget {
   @override
@@ -19,6 +26,11 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
+  var email = "";
+  var password = "";
+  var loading = false;
+  UserController userController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,12 +73,18 @@ class _loginPageState extends State<loginPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const TextField(
+                  TextField(
+                    onChanged: (value) {
+                      email = value;
+                    },
                     decoration: InputDecoration(
                       labelText: "Email",
                     ),
                   ),
-                  const TextField(
+                  TextField(
+                    onChanged: (value) {
+                      password = value;
+                    },
                     decoration: InputDecoration(
                       labelText: "Password",
                     ),
@@ -84,7 +102,7 @@ class _loginPageState extends State<loginPage> {
                     height: 30,
                   ),
                   InkWell(
-                    onTap: openHomePage,
+                    onTap: logIn,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       width: MediaQuery.of(context).size.width,
@@ -94,15 +112,17 @@ class _loginPageState extends State<loginPage> {
                               colors: [Color(0xfff3953b), Color(0xffe57509)],
                               stops: [0, 1],
                               begin: Alignment.topCenter)),
-                      child: const Center(
-                        child: Text(
-                          "LOGIN",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: 'sfpro'),
-                        ),
+                      child: Center(
+                        child: loading
+                            ? const CircularProgressIndicator()
+                            : const Text(
+                                "LOGIN",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'sfpro'),
+                              ),
                       ),
                     ),
                   ),
@@ -134,42 +154,42 @@ class _loginPageState extends State<loginPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 60,
-                        width: 60,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border:
-                                Border.all(color: Colors.black, width: 0.5)),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      'asset/images/googleLogo.png'))),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        height: 60,
-                        width: 60,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border:
-                                Border.all(color: Colors.black, width: 0.5)),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage('asset/images/fbLogo.png'))),
-                        ),
-                      )
-                    ],
-                  )
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Container(
+                  //       height: 60,
+                  //       width: 60,
+                  //       decoration: BoxDecoration(
+                  //           shape: BoxShape.circle,
+                  //           border:
+                  //               Border.all(color: Colors.black, width: 0.5)),
+                  //       child: Container(
+                  //         decoration: const BoxDecoration(
+                  //             image: DecorationImage(
+                  //                 image: AssetImage(
+                  //                     'asset/images/googleLogo.png'))),
+                  //       ),
+                  //     ),
+                  //     const SizedBox(
+                  //       width: 20,
+                  //     ),
+                  //     Container(
+                  //       height: 60,
+                  //       width: 60,
+                  //       decoration: BoxDecoration(
+                  //           shape: BoxShape.circle,
+                  //           border:
+                  //               Border.all(color: Colors.black, width: 0.5)),
+                  //       child: Container(
+                  //         decoration: const BoxDecoration(
+                  //             image: DecorationImage(
+                  //                 image:
+                  //                     AssetImage('asset/images/fbLogo.png'))),
+                  //       ),
+                  //     )
+                  //   ],
+                  // )
                 ],
               ),
             ),
@@ -201,13 +221,64 @@ class _loginPageState extends State<loginPage> {
     );
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(){
+      FirebaseAuth.instance.currentUser != null){
+         Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+      }
+    }
+  }
+
   void openSignUpPage() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => SignUpPage()));
   }
 
-  void openHomePage() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomePage()));
+  void logIn() {
+    setState(() {
+      loading = true;
+    });
+    print("signing in");
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((value) {
+      fetchUser();
+    }).catchError((err) {
+      setState(() {
+        loading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(err.toString()),
+      ));
+      print(err);
+    });
+  }
+
+  void fetchUser() {
+    var url = Uri.parse(
+        'http://localhost:8080/customers/${FirebaseAuth.instance.currentUser!.uid}'); //todo: chnage this
+    http.get(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        "accept": "application/json"
+      },
+    ).then((response) {
+      var responseBody = jsonDecode(response.body);
+      print("customer fetched");
+      print(responseBody);
+      userController.user.value = _userController.User(
+          id: responseBody['id'],
+          firstName: responseBody["firstName"]!,
+          lastName: responseBody["lastName"]!,
+          email: responseBody["email"]!,
+          address: responseBody["address"]!);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+    });
   }
 }
